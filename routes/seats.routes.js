@@ -15,8 +15,21 @@ router.route('/seats').get((req, res) => {
   });
   
   router.route('/seats').post((req, res) => {
-    db.seats.push({id: uuidv4(), day: req.body.day, client: req.body.client, seat: req.body.seat, email: req.body.email,})
-    res.json({ message: 'OK' });
+    const seat = {
+      id: uuidv4(),
+      day: req.body.day,
+      seat: req.body.seat,
+      client: req.body.client,
+      email: req.body.email
+    };
+  
+    if(db.seats.some(chosenSeat => (chosenSeat.day == req.body.day && chosenSeat.seat == req.body.seat))) {
+      return res.status(404).json({ message: 'The seat is taken'});
+    }
+    else {
+      db.seats.push(seat);
+      return res.json(db.seats);
+    }
   });
   
   router.route('/seats/:id').put((req, res) => {
