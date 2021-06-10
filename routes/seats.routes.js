@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('./../db');
 const { v4 : uuidv4 } = require('uuid');
+const io = express ( 'socket.io-client');
 
 router.route('/seats').get((req, res) => {
     res.json(db.seats);
@@ -29,6 +30,7 @@ router.route('/seats').get((req, res) => {
     }
     else {
       db.seats.push(seat);
+      io.emit('seatsUpdated', db.seats);
       return res.json(db.seats);
     }
   });
