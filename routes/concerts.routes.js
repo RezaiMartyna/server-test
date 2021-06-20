@@ -1,41 +1,19 @@
 const express = require('express');
 const router = express.Router();
-const db = require('./../db');
 
-router.route('/concerts').get((req, res) => {
-    res.json(db.concerts);
-  });
+const ConcertController = require('../controllers/conserts.controllers');
+
+router.get('/concerts', ConcertController.getAll);
   
-  router.route('/concerts/random').get((req, res) =>{
-    res.json(db.concerts[Math.floor(Math.random() * db.concerts.length)]);
-  });
+  router.get('/concerts/random', ConcertController.getRandom);
   
-  router.route('/concerts/:id').get((req, res) => {
-    res.json(db.concerts.find(({id}) => id == req.params.id));
-  });
+  router.get('/concerts/:id', ConcertController.getId);
   
-  router.route('/concerts').post((req, res) => {
-    db.concerts.push({id: uuidv4(), performer: req.body.performer, genre: req.body.genre, price: req.body.price, day: req.body.day, image: req.body.image,  })
-    res.json({ message: 'OK' });
-  });
+  router.post('/concerts', ConcertController.post);
   
-  router.route('/concerts/:id').put((req, res) => {
-    const item = (db.concerts.find(({id}) => id == req.params.id));
-    if (item){
-      item.performer = req.body.performer;
-      item.genre = req.body.genre;
-      item.price = req.body.price; 
-      item.day = req.body.day; 
-      item.image = req.body.image;
-    }
-    res.json({ message: 'OK' });
-  });
+  router.put('/concerts/:id', ConcertController.post);
   
-  router.route('/concerts/:id').delete((req, res) => {
-    const itemIndex = (db.concerts.findIndex(({id}) => id == req.params.id));
-    db.concerts.splice(itemIndex, 1)
-    res.json({ message: 'OK' });
-  });
+  router.delete('/concerts/:id', ConcertController.delete);
 
   
 module.exports = router;
