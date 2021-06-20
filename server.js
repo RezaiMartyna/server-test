@@ -38,7 +38,7 @@ app.use((req, res) => {
 })
 
 // connects our backend code with the database
-mongoose.connect('mongodb://localhost:27017/NewWaveDB', { useNewUrlParser: true });
+mongoose.connect('mongodb+srv://Mrezai:<password>@cluster0.rnboc.mongodb.net/myFirstDatabase?retryWrites=true&w=majority', { useNewUrlParser: true });
 const db = mongoose.connection;
 
 const server = app.listen(process.env.PORT || 8000, () => {

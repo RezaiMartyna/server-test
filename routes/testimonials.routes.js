@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const TestimonialController = require('../controllers/testimonials.controller');
+const TestimonialController = require('../controllers/testimonials.controllers');
 
 
   router.get('/testimonials', TestimonialController.getAll);
@@ -14,6 +14,6 @@ const TestimonialController = require('../controllers/testimonials.controller');
   
   router.put('/testimonials/:id', TestimonialController.putId);
   
-  router.delate('/testimonials/:id', TestimonialController.delete);
+  router.delete('/testimonials/:id', TestimonialController.delete);
 
 module.exports = router;
