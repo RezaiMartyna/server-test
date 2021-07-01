@@ -2,29 +2,29 @@ const Concert = require('../models/concert.model');
 const Workshop = require('../models/workshop.model');
 
 
-  exports.getAll = async (req, res) => {
+exports.getAll = async (req, res) => {
     
     
-    try {
+  try {
 
-      const concerts = await Concert.find({});
-      const concertsWithWorkshops = concerts.map(async concert =>  {
-        console.log(concert);
-        const workshops = await Workshop.find({concertId:concert.id})
-        console.log(workshops);
+    const concerts = await Concert.find({}).lean()
+    //console.log(concerts)
+    const concertsWithWorkshops = concerts.map( async concert =>  {
+      const workshops = await Workshop.find({concertId:concert._id}).lean()
+      console.log(workshops);
 
-        const obj = {...concert, workshops};
-        console.log(obj)
-        return obj
-        
-      });
-      console.log(concertsWithWorkshops)
-      res.json(concertsWithWorkshops);
-    }
-    catch(err) {
-      res.status(500).json({ message: err });
-    }
-  };
+      const obj = { ...concert, workshops };
+      //console.log(obj)
+      return obj
+      
+    });
+    console.log(concertsWithWorkshops)
+    res.json(await Promise.all(concertsWithWorkshops));
+  }
+  catch(err) {
+    res.status(500).json({ message: err });
+  }
+};
 
   exports.getRandom = async (req, res) => {
 
